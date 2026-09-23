@@ -589,13 +589,17 @@
                         <label>Password</label>
                         <input type="password" id="regPassword" required placeholder="••••••••">
                     </div>
+                    
+                    <!-- UPDATED REGISTER PLAN SELECTION DROPDOWN -->
                     <div class="form-group">
                         <label>Plan Access Option</label>
                         <select id="regOption" onchange="toggleTraderIdField()">
-                            <option value="fee">Option A: Pay Registration Fee (500 PKR)</option>
-                            <option value="broker">Option B: Tradowix Broker Link (FREE PRO)</option>
+                            <option value="free">Option A: Normal Free Account (Basic Access)</option>
+                            <option value="fee">Option B: Pay Registration Fee (500 PKR - PRO)</option>
+                            <option value="broker">Option C: Tradowix Broker Link (FREE PRO)</option>
                         </select>
                     </div>
+
                     <div class="form-group" id="traderIdGroup" style="display: none;">
                         <a href="https://tradowix.com/register?lid=41230523" target="_blank" class="btn-broker-link">
                             🔗 REGISTER ON TRADOWIX BROKER
@@ -603,7 +607,8 @@
                         <label>Tradowix Trader ID</label>
                         <input type="text" id="regTraderId" placeholder="Enter Your Trader ID">
                     </div>
-                    <button type="submit" class="btn-auth">REGISTER & CONTACT ADMIN</button>
+
+                    <button type="submit" class="btn-auth">REGISTER ACCOUNT</button>
                     <div class="auth-toggle">
                         Already registered? <span onclick="toggleAuthMode('login')">Login Here</span>
                     </div>
@@ -621,7 +626,7 @@
             <div class="bot-title-box">
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <h1>Market Vision AI</h1>
-                    <span class="pro-max-badge">PRO MAX</span>
+                    <span class="pro-max-badge" id="terminalBadge">PRO MAX</span>
                 </div>
                 <div style="font-size: 10px; color: var(--accent-cyan); font-weight: 800; margin-top:2px;">
                     AI BOT Engine Online
@@ -633,7 +638,7 @@
         <div class="status-ribbon">
             <div class="status-card">
                 <div class="lbl">LICENSE STATUS</div>
-                <div class="val">ACTIVE 🟢</div>
+                <div class="val" id="licenseStatusVal">ACTIVE 🟢</div>
             </div>
             <div class="status-card">
                 <div class="lbl">AI ENGINE STATUS</div>
@@ -645,7 +650,7 @@
             </div>
         </div>
 
-        <div class="unlock-banner">
+        <div class="unlock-banner" id="bannerStatus">
             👑 PRO MAX UNLOCKED ✅
         </div>
 
@@ -932,16 +937,32 @@
             document.getElementById('authScreen').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
 
-            if (currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+            const isAdmin = currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            const isPro = currentUser.plan === 'Pro' || isAdmin;
+
+            if (isAdmin) {
                 document.getElementById('adminNavItem').style.display = "flex";
                 renderAdminTable();
             } else {
                 document.getElementById('adminNavItem').style.display = "none";
             }
 
+            // Update UI Badges based on status
+            if (isPro) {
+                document.getElementById('terminalBadge').innerText = "PRO MAX";
+                document.getElementById('bannerStatus').innerHTML = "👑 PRO MAX UNLOCKED ✅";
+                document.getElementById('bannerStatus').style.background = "rgba(250, 204, 21, 0.08)";
+                document.getElementById('bannerStatus').style.color = "var(--accent-gold)";
+            } else {
+                document.getElementById('terminalBadge').innerText = "FREE";
+                document.getElementById('bannerStatus').innerHTML = "🔒 NORMAL FREE PLAN (LIMITED ACCESS)";
+                document.getElementById('bannerStatus').style.background = "rgba(6, 182, 212, 0.1)";
+                document.getElementById('bannerStatus').style.color = "var(--accent-cyan)";
+            }
+
             document.getElementById('setUserName').value = currentUser.name;
             document.getElementById('setUserEmail').value = currentUser.email;
-            document.getElementById('setUserPlan').value = currentUser.plan === 'Pro' ? 'PRO VIP (ACTIVE)' : 'NORMAL (FREE PLAN)';
+            document.getElementById('setUserPlan').value = isPro ? 'PRO VIP (ACTIVE)' : 'NORMAL (FREE PLAN)';
 
             // POPULATE PAIR DROPDOWN BASED ON PRO/FREE STATUS
             updatePairDropdown();
@@ -1032,12 +1053,16 @@
                 return;
             }
 
+            let optionLabel = "Free Plan";
+            if (option === "fee") optionLabel = "500 PKR Fee";
+            if (option === "broker") optionLabel = "Tradowix Link";
+
             const newUser = {
                 name,
                 email,
                 password,
-                plan: "Normal",
-                option: option === "fee" ? "500 PKR Fee" : "Tradowix Link",
+                plan: "Normal", // New registration is Normal plan by default
+                option: optionLabel,
                 traderId: traderId
             };
 
@@ -1047,8 +1072,11 @@
             currentUser = newUser;
             sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
 
-            let msg = `Hi Admin! Registered on Market Vision AI.%0AName: ${name}%0AEmail: ${email}%0AMethod: ${newUser.option}%0ATrader ID: ${traderId}`;
-            window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
+            // If user selected PRO option, notify admin on WhatsApp
+            if (option !== "free") {
+                let msg = `Hi Admin! Registered on Market Vision AI.%0AName: ${name}%0AEmail: ${email}%0AMethod: ${newUser.option}%0ATrader ID: ${traderId}`;
+                window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
+            }
 
             showDashboard();
         }
@@ -1083,7 +1111,7 @@
             if (currentUser && currentUser.email.toLowerCase() === users[i].email.toLowerCase()) {
                 currentUser.plan = 'Pro';
                 sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
-                updatePairDropdown();
+                showDashboard();
             }
             renderAdminTable();
         }
@@ -1094,7 +1122,7 @@
             if (currentUser && currentUser.email.toLowerCase() === users[i].email.toLowerCase()) {
                 currentUser.plan = 'Normal';
                 sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
-                updatePairDropdown();
+                showDashboard();
             }
             renderAdminTable();
         }
