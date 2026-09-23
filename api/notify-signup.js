@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Access control headers (CORS)
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -28,7 +27,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'onboarding@resend.dev',
-        to: 'blofar486@gmail.com', // Aapka email jahan notification chahiye
+        to: 'blofar486@gmail.com',
         subject: '🚨 New User Registration Alert - Market Vision AI',
         html: `
           <h2>New User Registered!</h2>
