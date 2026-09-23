@@ -225,16 +225,32 @@
             background: rgba(250, 204, 21, 0.08);
             border: 1px solid rgba(250, 204, 21, 0.4);
             border-radius: 14px;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             color: var(--accent-gold);
             font-size: 12px;
             font-weight: 900;
             letter-spacing: 1px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 6px;
+        }
+
+        .btn-upgrade-pro {
+            margin-top: 6px;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            text-transform: uppercase;
         }
 
         .card-container {
@@ -521,12 +537,63 @@
 
         .view-section { display: none; }
         .view-section.active { display: block; }
+
+        /* Upgrade Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: #080d1a;
+            border: 1px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.3);
+        }
+
+        .modal-title { font-size: 18px; font-weight: 900; color: var(--accent-gold); margin-bottom: 8px; }
+        .modal-sub { font-size: 12px; color: var(--text-sub); margin-bottom: 15px; }
+
+        .upgrade-option-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .upgrade-option-title { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .upgrade-option-desc { font-size: 10px; color: var(--text-sub); }
+
+        .btn-close-modal {
+            background: transparent;
+            border: 1px solid var(--text-sub);
+            color: var(--text-sub);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="fireflies-layer" id="firefliesLayer"></div>
 
+    <!-- Auth Screen -->
     <div id="authScreen" class="auth-container">
         <div class="auth-wrapper">
             <div class="lamp-section">
@@ -575,7 +642,7 @@
                     <div class="form-group">
                         <label>Plan Access Option</label>
                         <select id="regOption" onchange="toggleTraderIdField()">
-                            <option value="free">Option A: Normal Free Account (Basic Access)</option>
+                            <option value="free">Option A: Normal Free Account (Basic 5 Pairs)</option>
                             <option value="fee">Option B: Pay Registration Fee (500 PKR - PRO)</option>
                             <option value="broker">Option C: Tradowix Broker Link (FREE PRO)</option>
                         </select>
@@ -598,6 +665,7 @@
         </div>
     </div>
 
+    <!-- Main Dashboard -->
     <div id="mainApp" style="display: none;">
         <div class="bot-header">
             <div class="bot-avatar">🤖</div>
@@ -627,8 +695,12 @@
             </div>
         </div>
 
+        <!-- Dynamic Banner (Free vs Pro) -->
         <div class="unlock-banner" id="bannerStatus">
-            👑 PRO MAX UNLOCKED ✅
+            <div id="bannerText">👑 PRO MAX UNLOCKED ✅</div>
+            <button class="btn-upgrade-pro" id="bannerUpgradeBtn" style="display:none;" onclick="openUpgradeModal()">
+                ⚡ UPGRADE TO PRO VIP TERMINAL ⚡
+            </button>
         </div>
 
         <div id="terminalView" class="view-section active">
@@ -643,14 +715,16 @@
                         <option value="Tradowix">Tradowix</option>
                         <option value="Pocket Option">Pocket Option</option>
                         <option value="IQ Option">IQ Option</option>
+                        <option value="Exness">Exness</option>
                     </select>
                 </div>
 
                 <div class="select-box-group">
                     <label>🌐 MARKET TYPE</label>
-                    <select id="marketTypeSelect">
-                        <option value="OTC">OTC Markets</option>
-                        <option value="LIVE">Live Forex Markets</option>
+                    <select id="marketTypeSelect" onchange="updatePairDropdown()">
+                        <option value="ALL">All Market Pairs</option>
+                        <option value="OTC">OTC Markets Only</option>
+                        <option value="LIVE">Live Forex Markets Only</option>
                     </select>
                 </div>
 
@@ -691,7 +765,7 @@
                     <div class="sig-col-left">
                         <div>
                             <div class="sig-label">PAIR</div>
-                            <div class="sig-value" id="resPair">USD/ARS<br><span style="font-size:9px; color:var(--text-sub);">(OTC)</span></div>
+                            <div class="sig-value" id="resPair">USD/ARS</div>
                         </div>
                         <div>
                             <div class="sig-label">BROKER</div>
@@ -820,6 +894,10 @@
                     <input type="text" id="setUserPlan" readonly>
                 </div>
 
+                <button class="btn-upgrade-pro" style="margin-bottom: 12px; height: 42px;" onclick="openUpgradeModal()">
+                    🚀 UPGRADE TO PRO VIP
+                </button>
+
                 <a href="https://tradowix.com/register?lid=41230523" target="_blank" class="btn-broker-link">
                     🔗 REGISTER ON TRADOWIX BROKER
                 </a>
@@ -848,15 +926,64 @@
         </nav>
     </div>
 
+    <!-- Upgrade Modal -->
+    <div id="upgradeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">👑 UPGRADE TO PRO VIP</div>
+            <div class="modal-sub">Unlock All OTC & Live Pairs + 99% Precision Signals</div>
+
+            <div class="upgrade-option-box">
+                <div class="upgrade-option-title">1. Registration Fee (500 PKR)</div>
+                <div class="upgrade-option-desc">Pay 500 PKR to get full permanent lifetime PRO access.</div>
+            </div>
+
+            <div class="upgrade-option-box">
+                <div class="upgrade-option-title">2. Free via Tradowix Broker</div>
+                <div class="upgrade-option-desc">Create account on Tradowix using our link and send Trader ID to Admin.</div>
+            </div>
+
+            <button class="btn-auth" style="background: linear-gradient(135deg, #25d366, #128c7e); margin-top:10px;" onclick="requestUpgrade()">
+                💬 UPGRADE VIA WHATSAPP NOW
+            </button>
+            <br>
+            <button class="btn-close-modal" onclick="closeUpgradeModal()">Close</button>
+        </div>
+    </div>
+
     <script>
         const ADMIN_EMAIL = "blofar486@gmail.com";
         const ADMIN_PHONE = "923157327830";
+        
+        // Allowed 5 Free Pairs
         const FREE_ALLOWED_PAIRS = ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"];
 
+        // All Pairs Screen Categories
         const pairData = [
-            { group: "Standard Forex Pairs", isFree: true, pairs: ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"] },
-            { group: "VIP Live Pairs", isFree: false, pairs: ["USD/ARS (OTC)", "EUR/JPY", "GBP/JPY", "USD/CHF", "USD/CAD", "USD/PKR"] },
-            { group: "VIP OTC Pairs", isFree: false, pairs: ["USD/PKR OTC", "USD/INR OTC", "EUR/USD OTC", "GBP/USD OTC"] }
+            {
+                group: "Standard Free Forex Pairs",
+                isFreeGroup: true,
+                pairs: ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"]
+            },
+            {
+                group: "PRO OTC Market Pairs",
+                type: "OTC",
+                isFreeGroup: false,
+                pairs: [
+                    "USD/ARS OTC", "USD/PKR OTC", "USD/INR OTC", "USD/BDT OTC", 
+                    "EUR/USD OTC", "GBP/USD OTC", "USD/JPY OTC", "AUD/CAD OTC", 
+                    "NZD/USD OTC", "USD/BRL OTC", "USD/EGP OTC", "USD/TRY OTC"
+                ]
+            },
+            {
+                group: "PRO Live Forex Pairs",
+                type: "LIVE",
+                isFreeGroup: false,
+                pairs: [
+                    "EUR/JPY", "GBP/JPY", "USD/CAD", "USD/CHF", "AUD/JPY", 
+                    "NZD/JPY", "EUR/CAD", "GBP/CAD", "EUR/AUD", "GBP/AUD", 
+                    "CAD/CHF", "CHF/JPY"
+                ]
+            }
         ];
 
         let defaultUsers = [
@@ -911,14 +1038,16 @@
 
             if (isPro) {
                 document.getElementById('terminalBadge').innerText = "PRO MAX";
-                document.getElementById('bannerStatus').innerHTML = "👑 PRO MAX UNLOCKED ✅";
+                document.getElementById('bannerText').innerHTML = "👑 PRO MAX UNLOCKED ✅";
                 document.getElementById('bannerStatus').style.background = "rgba(250, 204, 21, 0.08)";
                 document.getElementById('bannerStatus').style.color = "var(--accent-gold)";
+                document.getElementById('bannerUpgradeBtn').style.display = "none";
             } else {
                 document.getElementById('terminalBadge').innerText = "FREE";
-                document.getElementById('bannerStatus').innerHTML = "🔒 NORMAL FREE PLAN (LIMITED ACCESS)";
+                document.getElementById('bannerText').innerHTML = "🔒 NORMAL FREE PLAN (LIMITED 5 PAIRS)";
                 document.getElementById('bannerStatus').style.background = "rgba(6, 182, 212, 0.1)";
                 document.getElementById('bannerStatus').style.color = "var(--accent-cyan)";
+                document.getElementById('bannerUpgradeBtn').style.display = "block";
             }
 
             document.getElementById('setUserName').value = currentUser.name;
@@ -930,12 +1059,17 @@
 
         function updatePairDropdown() {
             const pairSelect = document.getElementById('pairSelect');
+            const marketType = document.getElementById('marketTypeSelect').value;
             pairSelect.innerHTML = '';
 
             const isAdmin = currentUser && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
             const isPro = currentUser && (currentUser.plan === 'Pro' || isAdmin);
 
             pairData.forEach(g => {
+                if (marketType !== "ALL" && g.type && g.type !== marketType) {
+                    return;
+                }
+
                 const optgroup = document.createElement('optgroup');
                 
                 if (isPro) {
@@ -947,11 +1081,12 @@
                         optgroup.appendChild(opt);
                     });
                 } else {
-                    optgroup.label = g.isFree ? "✅ FREE Allowed Pairs" : "🔒 " + g.group;
+                    optgroup.label = g.isFreeGroup ? "✅ FREE Allowed Pairs" : "🔒 " + g.group;
                     g.pairs.forEach(p => {
+                        const isFreePair = FREE_ALLOWED_PAIRS.includes(p);
                         const opt = document.createElement('option');
                         opt.value = p;
-                        opt.textContent = g.isFree ? `${p} ✅ (FREE)` : `${p} 🔒`;
+                        opt.textContent = isFreePair ? `${p} ✅ (FREE)` : `${p} 🔒 (PRO ONLY)`;
                         optgroup.appendChild(opt);
                     });
                 }
@@ -1029,7 +1164,7 @@
             currentUser = newUser;
             sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
 
-            // Vercel Background Notification API Call
+            // Vercel Email Notification Call
             try {
                 fetch('/api/notify-signup', {
                     method: 'POST',
@@ -1042,16 +1177,23 @@
                     })
                 });
             } catch(err) {
-                console.log("Email Notification Failed:", err);
+                console.log("Email Notification Error:", err);
             }
 
-            // WhatsApp Redirection for Paid/Broker Registration Options
             if (option !== "free") {
                 let msg = `Hi Admin! Registered on Market Vision AI.%0AName: ${name}%0AEmail: ${email}%0AMethod: ${newUser.option}%0ATrader ID: ${traderId}`;
                 window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
             }
 
             showDashboard();
+        }
+
+        function openUpgradeModal() {
+            document.getElementById('upgradeModal').style.display = 'flex';
+        }
+
+        function closeUpgradeModal() {
+            document.getElementById('upgradeModal').style.display = 'none';
         }
 
         function renderAdminTable() {
@@ -1123,7 +1265,8 @@
         }
 
         function requestUpgrade() {
-            window.open(`https://wa.me/${ADMIN_PHONE}?text=Hi%20Admin!%20I%20want%20to%20upgrade%20my%20account`, '_blank');
+            let userMsg = currentUser ? `Email: ${currentUser.email}` : "";
+            window.open(`https://wa.me/${ADMIN_PHONE}?text=Hi%20Admin!%20I%20want%20to%20upgrade%20my%20account%20to%20PRO%20VIP.%20${userMsg}`, '_blank');
         }
 
         function startRadarScanning() {
@@ -1134,7 +1277,7 @@
             const isPro = currentUser && currentUser.plan === 'Pro';
 
             if (!isAllowed && !isPro && !isAdmin) {
-                alert("🔒 Yeh Pair PRO VIP Users ke liye locked hai!\n\nFree plan me sirf 5 Pairs allowed hain.");
+                openUpgradeModal();
                 return;
             }
 
@@ -1168,7 +1311,7 @@
 
             const sigId = "#MVAI" + Math.floor(100000 + Math.random() * 900000);
 
-            document.getElementById('resPair').innerHTML = pair;
+            document.getElementById('resPair').innerText = pair;
             document.getElementById('resBroker').innerText = broker;
             document.getElementById('resTimer').innerText = timer;
             document.getElementById('resSigId').innerText = sigId;
