@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MARKET VISION AI - PRO MAX TERMINAL</title>
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --bg-card: #080d1a;
+            --bg-card-border: rgba(6, 182, 212, 0.25);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --accent-red: #f43f5e;
+            --accent-gold: #facc15;
+            --text-main: #f9fafb;
+            --text-sub: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND FIREFLIES EFFECT */
+        .fireflies-layer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .firefly {
+            position: absolute;
+            width: 4px; height: 4px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-gold);
+            opacity: 0.5;
+            animation: floatGlow 7s infinite ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+            50% { transform: translateY(-30px) translateX(20px); opacity: 0.8; }
+        }
+
+        /* 1. AUTH SCREEN (PORANI UNTOUCHED SETTING) */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .auth-wrapper {
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            min-height: 500px;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lamp-section {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        .lamp-box {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .lamp-shade {
+            width: 100px; height: 50px;
+            background: #1a202c;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom: 3px solid var(--accent-gold);
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+        }
+
+        .lamp-stand { width: 5px; height: 150px; background: #2d3748; }
+        .lamp-base { width: 80px; height: 10px; background: #1a202c; border-radius: 5px; }
+
+        .auth-card {
+            flex: 1.2;
+            background: rgba(8, 13, 26, 0.95);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.2);
+            backdrop-filter: blur(12px);
+            width: 100%;
+        }
+
+        .auth-card h2 { text-align: center; color: var(--accent-cyan); font-size: 22px; font-weight: 800; }
+        .auth-card p { text-align: center; color: var(--text-sub); font-size: 12px; margin-bottom: 18px; }
+
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-size: 11px; color: var(--accent-cyan); margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #040812;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+        }
+
+        input:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(6, 182, 212, 0.3); }
+
+        .btn-broker-link {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 11px;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .auth-toggle { text-align: center; margin-top: 12px; font-size: 12px; color: var(--text-sub); }
+        .auth-toggle span { color: var(--accent-cyan); cursor: pointer; font-weight: bold; }
+
+        /* 2. MAIN TERMINAL UI */
+        #mainApp { padding-bottom: 75px; max-width: 480px; margin: 0 auto; width: 100%; }
+
+        .bot-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-avatar {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .bot-title-box h1 { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
+
+        .pro-max-badge {
+            background: linear-gradient(90deg, #f59e0b, #ec4899);
+            color: #000;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .status-ribbon {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            padding: 0 16px;
+            margin-bottom: 12px;
+        }
+
+        .status-card {
+            background: #080e1e;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 8px 6px;
+            text-align: center;
+        }
+
+        .status-card .lbl { font-size: 8px; color: var(--text-sub); text-transform: uppercase; font-weight: 700; }
+        .status-card .val { font-size: 11px; font-weight: 800; color: var(--accent-green); display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 2px; }
+
+        .unlock-banner {
+            margin: 0 16px 16px 16px;
+            background: rgba(250, 204, 21, 0.08);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            border-radius: 14px;
+            padding: 8px;
+            text-align: center;
+            color: var(--accent-gold);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* CARD CONTAINERS */
+        .card-container {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 20px;
+            padding: 18px;
+            margin: 0 16px 16px 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        /* FORM INPUT CARD */
+        .card-header-title { text-align: center; font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 2px; }
+        .card-header-sub { text-align: center; font-size: 11px; color: var(--text-sub); margin-bottom: 16px; }
+
+        .select-box-group { margin-bottom: 12px; }
+        .select-box-group label { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; }
+
+        .btn-generate {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            margin-top: 14px;
+            text-transform: uppercase;
+        }
+
+        /* 3. SIGNAL RESULT ANIMATION CARD (EXACTLY MATCHING IMAGE 138875_2.jpg) */
+        .signal-result-box { display: none; padding: 16px; }
+
+        .sig-top-layout {
+            display: grid;
+            grid-template-columns: 1fr 150px 1fr;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .sig-col-left, .sig-col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 10px;
+        }
+
+        .sig-col-left { text-align: left; }
+        .sig-col-right { text-align: right; }
+
+        .sig-label { font-size: 8px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
+        .sig-value { font-size: 12px; font-weight: 800; color: #fff; margin-top: 2px; }
+
+        /* RADAR TARGET ANIMATION WITH CROSSHAIRS */
+        .target-radar-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-circle {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--accent-red);
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4), inset 0 0 15px rgba(244, 63, 94, 0.2);
+            animation: radarPulse 2s infinite ease-in-out;
+        }
+
+        .radar-circle.call-style {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        @keyframes radarPulse {
+            0%, 100% { transform: scale(1); opacity: 0.85; }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px rgba(244, 63, 94, 0.7); }
+        }
+
+        /* CROSSHAIR TICKS AT 12, 3, 6, 9 O'CLOCK */
+        .radar-tick-v {
+            position: absolute;
+            top: -6px; bottom: -6px; left: 50%; width: 2px;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, var(--accent-red) 8px, transparent 8px, transparent calc(100% - 8px), var(--accent-red) calc(100% - 8px));
+        }
+
+        .radar-tick-h {
+            position: absolute;
+            left: -6px; right: -6px; top: 50%; height: 2px;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, var(--accent-red) 8px, transparent 8px, transparent calc(100% - 8px), var(--accent-red) calc(100% - 8px));
+        }
+
+        .call-style .radar-tick-v {
+            background: linear-gradient(to bottom, var(--accent-green) 8px, transparent 8px, transparent calc(100% - 8px), var(--accent-green) calc(100% - 8px));
+        }
+        .call-style .radar-tick-h {
+            background: linear-gradient(to right, var(--accent-green) 8px, transparent 8px, transparent calc(100% - 8px), var(--accent-green) calc(100% - 8px));
+        }
+
+        .radar-center-content {
+            z-index: 5;
+            text-align: center;
+        }
+
+        .radar-arrow { font-size: 38px; line-height: 1; font-weight: 900; }
+        .radar-action-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-top: -4px; }
+        .radar-sub-text { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        .signal-put .radar-arrow, .signal-put .radar-action-text { color: var(--accent-red); }
+        .signal-call .radar-arrow, .signal-call .radar-action-text { color: var(--accent-green); }
+
+        /* MIDDLE 4-METRICS GRID */
+        .sig-metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .metric-box { background: rgba(4, 8, 18, 0.7); padding: 8px 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .metric-box .l { font-size: 7px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
+        .metric-box .v { font-size: 11px; font-weight: 800; color: #fff; margin-top: 3px; }
+
+        /* BOTTOM FOOTER OF SIGNAL CARD */
+        .sig-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .ai-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .ai-status-badge .dot { width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+
+        .btn-new-signal {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #2563eb, #a855f7);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+            text-transform: uppercase;
+        }
+
+        /* BOTTOM STATS BAR */
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+            margin: 0 16px 16px 16px;
+        }
+
+        .stat-card {
+            background: #080d1a;
+            border: 1px solid var(--bg-card-border);
+            border-radius: 12px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .stat-card .l { font-size: 8px; color: var(--text-sub); text-transform: uppercase; }
+        .stat-card .v { font-size: 11px; font-weight: 800; color: var(--accent-cyan); margin-top: 2px; }
+
+        /* NAV BAR */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+            background: rgba(8, 13, 26, 0.95);
+            border-top: 1px solid var(--bg-card-border);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000; backdrop-filter: blur(10px);
+        }
+
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-sub); font-size: 10px; font-weight: 700; cursor: pointer; }
+        .nav-item.active { color: var(--accent-cyan); }
+
+        /* ADMIN & SETTINGS */
+        .user-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+        .user-table th, .user-table td { border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px; text-align: left; }
+        .user-table th { background: #0f172a; color: var(--accent-cyan); }
+        .btn-action-sm { border: none; color: white; padding: 4px 6px; border-radius: 4px; font-size: 9px; cursor: pointer; }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="fireflies-layer" id="firefliesLayer"></div>
+
+    <!-- 1. LOGIN / REGISTER SCREEN -->
+    <div id="authScreen" class="auth-container">
+        <div class="auth-wrapper">
+            <div class="lamp-section">
+                <div class="lamp-box">
+                    <div class="lamp-shade"></div>
+                    <div class="lamp-stand"></div>
+                    <div class="lamp-base"></div>
+                </div>
+            </div>
+
+            <div class="auth-card">
+                <h2>MARKET VISION AI</h2>
+                <p>Institutional Binary Signal Terminal v7.0</p>
+
+                <div id="errorBox" style="display:none; background:rgba(244,63,94,0.2); color:#fca5a5; padding:8px; border-radius:8px; font-size:11px; margin-bottom:10px; text-align:center;"></div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Account Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter Email Address">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-auth">LOGIN TERMINAL</button>
+                    <div class="auth-toggle">
+                        New Trader? <span onclick="toggleAuthMode('register')">Register Account</span>
+                    </div>
+                </form>
+
+                <form id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" required placeholder="Enter Full Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Email</label>
+                        <input type="email" id="regEmail" required placeholder="Enter Email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="regPassword" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Plan Access Option</label>
+                        <select id="regOption" onchange="toggleTraderIdField()">
+                            <option value="fee">Option A: Pay Registration Fee (500 PKR)</option>
+                            <option value="broker">Option B: Tradowix Broker Link (FREE PRO)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="traderIdGroup" style="display: none;">
+                        <a href="https://tradowix.com/register?lid=41230523" target="_blank" class="btn-broker-link">
+                            🔗 REGISTER ON TRADOWIX BROKER
+                        </a>
+                        <label>Tradowix Trader ID</label>
+                        <input type="text" id="regTraderId" placeholder="Enter Your Trader ID">
+                    </div>
+                    <button type="submit" class="btn-auth">REGISTER & CONTACT ADMIN</button>
+                    <div class="auth-toggle">
+                        Already registered? <span onclick="toggleAuthMode('login')">Login Here</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN TERMINAL -->
+    <div id="mainApp" style="display: none;">
+        
+        <!-- BOT HEADER -->
+        <div class="bot-header">
+            <div class="bot-avatar">🤖</div>
+            <div class="bot-title-box">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <h1>Chinese Signals</h1>
+                    <span class="pro-max-badge">PRO MAX</span>
+                </div>
+                <div style="font-size: 10px; color: var(--accent-cyan); font-weight: 800; margin-top:2px;">
+                    AI BOT Engine Online
+                </div>
+            </div>
+        </div>
+
+        <!-- STATUS RIBBON -->
+        <div class="status-ribbon">
+            <div class="status-card">
+                <div class="lbl">LICENSE STATUS</div>
+                <div class="val">ACTIVE 🟢</div>
+            </div>
+            <div class="status-card">
+                <div class="lbl">AI ENGINE STATUS</div>
+                <div class="val">ONLINE 🟢</div>
+            </div>
+            <div class="status-card">
+                <div class="lbl">ACTIVE USERS</div>
+                <div class="val" style="color:var(--accent-cyan);">1M+</div>
+            </div>
+        </div>
+
+        <div class="unlock-banner">
+            👑 PRO MAX UNLOCKED ✅
+        </div>
+
+        <!-- TERMINAL VIEW -->
+        <div id="terminalView" class="view-section active">
+
+            <!-- FORM SELECTION CARD -->
+            <div id="signalFormCard" class="card-container">
+                <div class="card-header-title">GENERATE SIGNALS</div>
+                <div class="card-header-sub">AI Analyzed High Accuracy Trading Signals</div>
+
+                <div class="select-box-group">
+                    <label>🏛 BROKER</label>
+                    <select id="brokerSelect">
+                        <option value="Quotex">Quotex</option>
+                        <option value="Tradowix">Tradowix</option>
+                        <option value="Pocket Option">Pocket Option</option>
+                        <option value="IQ Option">IQ Option</option>
+                    </select>
+                </div>
+
+                <div class="select-box-group">
+                    <label>🌐 MARKET TYPE</label>
+                    <select id="marketTypeSelect">
+                        <option value="OTC">OTC Markets</option>
+                        <option value="LIVE">Live Forex Markets</option>
+                    </select>
+                </div>
+
+                <div class="select-box-group">
+                    <label>📊 ASSET PAIR</label>
+                    <select id="pairSelect">
+                        <optgroup label="✅ FREE Allowed Pairs (5 Pairs)">
+                            <option value="EUR/USD">EUR/USD ✅ (FREE)</option>
+                            <option value="GBP/USD">GBP/USD ✅ (FREE)</option>
+                            <option value="USD/JPY">USD/JPY ✅ (FREE)</option>
+                            <option value="AUD/USD">AUD/USD ✅ (FREE)</option>
+                            <option value="EUR/GBP">EUR/GBP ✅ (FREE)</option>
+                        </optgroup>
+                        <optgroup label="🔒 PRO VIP Live Pairs">
+                            <option value="USD/ARS (OTC)">USD/ARS (OTC) 🔒</option>
+                            <option value="EUR/JPY">EUR/JPY 🔒</option>
+                            <option value="GBP/JPY">GBP/JPY 🔒</option>
+                            <option value="USD/CHF">USD/CHF 🔒</option>
+                            <option value="USD/CAD">USD/CAD 🔒</option>
+                            <option value="USD/PKR">USD/PKR 🔒</option>
+                        </optgroup>
+                        <optgroup label="🔒 PRO VIP OTC Pairs">
+                            <option value="USD/PKR OTC">USD/PKR OTC 🔒</option>
+                            <option value="USD/INR OTC">USD/INR OTC 🔒</option>
+                            <option value="EUR/USD OTC">EUR/USD OTC 🔒</option>
+                            <option value="GBP/USD OTC">GBP/USD OTC 🔒</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="select-box-group">
+                    <label>⏱ TIMER / EXPIRY</label>
+                    <select id="timerSelect">
+                        <option value="5 Seconds">5 Seconds</option>
+                        <option value="1 Minute">1 Minute (1M)</option>
+                        <option value="5 Minutes">5 Minutes (5M)</option>
+                    </select>
+                </div>
+
+                <button class="btn-generate" onclick="generateSignal()">
+                    🚀 GENERATE SIGNAL
+                </button>
+            </div>
+
+            <!-- EXACT SIGNAL RESULT CARD (IMAGE 138875_2.jpg EXACT ANIMATION & LAYOUT) -->
+            <div id="signalResultCard" class="card-container signal-result-box">
+                
+                <div class="sig-top-layout">
+                    <!-- LEFT COLUMN -->
+                    <div class="sig-col-left">
+                        <div>
+                            <div class="sig-label">PAIR</div>
+                            <div class="sig-value" id="resPair">USD/ARS<br><span style="font-size:9px; color:var(--text-sub);">(OTC)</span></div>
+                        </div>
+                        <div>
+                            <div class="sig-label">BROKER</div>
+                            <div class="sig-value" id="resBroker">Quotex</div>
+                        </div>
+                        <div>
+                            <div class="sig-label">TIMER</div>
+                            <div class="sig-value" id="resTimer">5 Seconds</div>
+                        </div>
+                    </div>
+
+                    <!-- CENTER RADAR ANIMATION -->
+                    <div class="target-radar-wrapper">
+                        <div class="radar-circle" id="radarRing">
+                            <div class="radar-tick-v"></div>
+                            <div class="radar-tick-h"></div>
+                        </div>
+                        <div class="radar-center-content" id="signalBox">
+                            <div class="radar-arrow" id="resArrow">↓</div>
+                            <div class="radar-action-text" id="resAction">DOWN</div>
+                            <div class="radar-sub-text" id="resSub">STRONG SELL SIGNAL</div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="sig-col-right">
+                        <div>
+                            <div class="sig-label">SIGNAL ID</div>
+                            <div class="sig-value" style="color:var(--text-sub);" id="resSigId">#CSAI547647</div>
+                        </div>
+                        <div>
+                            <div class="sig-label">ACCURACY</div>
+                            <div class="sig-value" style="color:var(--accent-cyan);" id="resAccuracy">98.6%</div>
+                        </div>
+                        <div>
+                            <div class="sig-label">EXPIRES IN</div>
+                            <div class="sig-value" style="color:#fff;" id="resExpiresIn">00:45</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE 4-METRICS -->
+                <div class="sig-metrics-grid">
+                    <div class="metric-box">
+                        <div class="l">ENTRY TIME</div>
+                        <div class="v" id="resEntryTime">21:33:20</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="l">EXPIRY TIME</div>
+                        <div class="v" id="resExpiryTime">21:34:05</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="l">SIGNAL STRENGTH</div>
+                        <div class="v" id="resStrength" style="color:var(--accent-green);">98.7%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="l">AI CONFIDENCE</div>
+                        <div class="v" id="resConfidence" style="color:var(--text-main);">HIGH</div>
+                    </div>
+                </div>
+
+                <!-- FOOTER BUTTONS -->
+                <div class="sig-card-footer">
+                    <div class="ai-status-badge">
+                        <div class="dot"></div>
+                        <span>AI Analysis Completed</span>
+                    </div>
+                    <button class="btn-new-signal" onclick="resetSignalCard()">
+                        🔄 GENERATE NEW SIGNAL
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- BOTTOM STATS BAR -->
+            <div class="bottom-stats">
+                <div class="stat-card">
+                    <div class="l">AI ACCURACY</div>
+                    <div class="v">98.6%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="l">SIGNAL STR.</div>
+                    <div class="v">98.7%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="l">AVG TIME</div>
+                    <div class="v">00:45</div>
+                </div>
+                <div class="stat-card">
+                    <div class="l">TODAY</div>
+                    <div class="v">32</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ADMIN PANEL VIEW -->
+        <div id="adminView" class="view-section">
+            <div class="card-container">
+                <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">👑 Admin Control Panel</h3>
+                <p style="font-size: 11px; margin-bottom: 10px;">Total Registered Users: <strong id="totalUsersCount" style="color:var(--accent-green);">0</strong></p>
+
+                <div style="overflow-x:auto;">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Option</th>
+                                <th>Trader ID</th>
+                                <th>Plan</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div id="settingsView" class="view-section">
+            <div class="card-container">
+                <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">⚙️ User Settings</h3>
+                <div class="form-group">
+                    <label>Trader Name</label>
+                    <input type="text" id="setUserName" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Account Email</label>
+                    <input type="text" id="setUserEmail" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Subscription Plan</label>
+                    <input type="text" id="setUserPlan" readonly>
+                </div>
+
+                <a href="https://tradowix.com/register?lid=41230523" target="_blank" class="btn-broker-link">
+                    🔗 REGISTER ON TRADOWIX BROKER
+                </a>
+
+                <button class="btn-auth" style="background: linear-gradient(135deg, #25d366, #128c7e);" onclick="requestUpgrade()">
+                    💬 CONTACT ADMIN ON WHATSAPP
+                </button>
+
+                <button class="btn-auth" style="background: var(--accent-red); margin-top: 10px;" onclick="logout()">LOGOUT TERMINAL</button>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV BAR -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('terminalView', this)">
+                <div style="font-size:16px;">🏠</div>
+                <span>Dashboard</span>
+            </div>
+            <div id="adminNavItem" class="nav-item" style="display:none;" onclick="switchTab('adminView', this)">
+                <div style="font-size:16px;">👑</div>
+                <span>Admin</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('settingsView', this)">
+                <div style="font-size:16px;">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
+    </div>
+
+    <script>
+        const ADMIN_EMAIL = "blofar486@gmail.com";
+        const ADMIN_PHONE = "923157327830";
+        const FREE_ALLOWED_PAIRS = ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"];
+
+        let defaultUsers = [
+            { name: "Super Admin", email: "Blofar486@gmail.com", password: "78600786@@", plan: "Pro", option: "Admin", traderId: "N/A" }
+        ];
+
+        let users = JSON.parse(localStorage.getItem('users_db'));
+        if (!users || users.length === 0) {
+            users = defaultUsers;
+            localStorage.setItem('users_db', JSON.stringify(users));
+        }
+
+        let currentUser = JSON.parse(sessionStorage.getItem('activeUser')) || null;
+        let countdownInterval = null;
+
+        // GENERATE FIREFLIES
+        const layer = document.getElementById('firefliesLayer');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'firefly';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            layer.appendChild(p);
+        }
+
+        window.onload = function() {
+            if (currentUser) {
+                showDashboard();
+            } else {
+                showAuthScreen();
+            }
+        };
+
+        function showAuthScreen() {
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        function showDashboard() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+
+            if (currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                document.getElementById('adminNavItem').style.display = "flex";
+                renderAdminTable();
+            } else {
+                document.getElementById('adminNavItem').style.display = "none";
+            }
+
+            document.getElementById('setUserName').value = currentUser.name;
+            document.getElementById('setUserEmail').value = currentUser.email;
+            document.getElementById('setUserPlan').value = currentUser.plan === 'Pro' ? 'PRO VIP (ACTIVE)' : 'NORMAL (FREE PLAN)';
+        }
+
+        function toggleAuthMode(mode) {
+            document.getElementById('errorBox').style.display = 'none';
+            if (mode === 'register') {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+            } else {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            }
+        }
+
+        function toggleTraderIdField() {
+            const opt = document.getElementById('regOption').value;
+            document.getElementById('traderIdGroup').style.display = (opt === 'broker') ? 'block' : 'none';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+
+            users = JSON.parse(localStorage.getItem('users_db')) || users;
+            const found = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
+
+            if (found) {
+                currentUser = found;
+                sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
+                showDashboard();
+            } else {
+                const err = document.getElementById('errorBox');
+                err.innerText = "Invalid Email or Password!";
+                err.style.display = 'block';
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const option = document.getElementById('regOption').value;
+            const traderId = document.getElementById('regTraderId').value.trim() || "N/A";
+
+            users = JSON.parse(localStorage.getItem('users_db')) || users;
+
+            if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                alert("Email already registered!");
+                return;
+            }
+
+            const newUser = {
+                name,
+                email,
+                password,
+                plan: "Normal",
+                option: option === "fee" ? "500 PKR Fee" : "Tradowix Link",
+                traderId: traderId
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users_db', JSON.stringify(users));
+
+            currentUser = newUser;
+            sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
+
+            let msg = `Hi Admin! Registered on Market Vision AI.%0AName: ${name}%0AEmail: ${email}%0AMethod: ${newUser.option}%0ATrader ID: ${traderId}`;
+            window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
+
+            showDashboard();
+        }
+
+        function renderAdminTable() {
+            users = JSON.parse(localStorage.getItem('users_db')) || users;
+            const tbody = document.getElementById('adminUserTable');
+            document.getElementById('totalUsersCount').innerText = users.length;
+            tbody.innerHTML = '';
+
+            users.forEach((u, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td><span style="color:#06b6d4;">${u.option || 'N/A'}</span></td>
+                    <td>${u.traderId || 'N/A'}</td>
+                    <td><strong style="color:${u.plan === 'Pro' ? '#f59e0b' : '#9ca3af'}">${u.plan}</strong></td>
+                    <td>
+                        <button onclick="approvePro(${index})" class="btn-action-sm" style="background:#10b981;">PRO</button>
+                        <button onclick="setNormal(${index})" class="btn-action-sm" style="background:#06b6d4;">Normal</button>
+                        <button onclick="deleteUser(${index})" class="btn-action-sm" style="background:#f43f5e;">Del</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function approvePro(i) {
+            users[i].plan = 'Pro';
+            localStorage.setItem('users_db', JSON.stringify(users));
+            renderAdminTable();
+        }
+
+        function setNormal(i) {
+            users[i].plan = 'Normal';
+            localStorage.setItem('users_db', JSON.stringify(users));
+            renderAdminTable();
+        }
+
+        function deleteUser(i) {
+            if (confirm("Delete user?")) {
+                users.splice(i, 1);
+                localStorage.setItem('users_db', JSON.stringify(users));
+                renderAdminTable();
+            }
+        }
+
+        function switchTab(viewId, elem) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            elem.classList.add('active');
+            if (viewId === 'adminView') renderAdminTable();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('activeUser');
+            currentUser = null;
+            showAuthScreen();
+        }
+
+        function requestUpgrade() {
+            window.open(`https://wa.me/${ADMIN_PHONE}?text=Hi%20Admin!%20I%20want%20to%20upgrade%20my%20account`, '_blank');
+        }
+
+        // GENERATE SIGNAL & SHOW TARGET ANIMATION
+        function generateSignal() {
+            const pair = document.getElementById('pairSelect').value;
+            const broker = document.getElementById('brokerSelect').value;
+            const timer = document.getElementById('timerSelect').value;
+
+            const isAllowed = FREE_ALLOWED_PAIRS.includes(pair);
+            const isAdmin = currentUser && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            const isPro = currentUser && currentUser.plan === 'Pro';
+
+            if (!isAllowed && !isPro && !isAdmin) {
+                alert("🔒 Yeh Pair PRO VIP Users ke liye locked hai!\n\nFree plan me sirf 5 Pairs allowed hain.");
+                return;
+            }
+
+            const isCall = Math.random() > 0.5;
+            const now = new Date();
+            const entryTime = now.toTimeString().split(' ')[0];
+            
+            const expDate = new Date(now.getTime() + 45000);
+            const expiryTime = expDate.toTimeString().split(' ')[0];
+
+            const sigId = "#CSAI" + Math.floor(100000 + Math.random() * 900000);
+
+            document.getElementById('resPair').innerHTML = pair;
+            document.getElementById('resBroker').innerText = broker;
+            document.getElementById('resTimer').innerText = timer;
+            document.getElementById('resSigId').innerText = sigId;
+            document.getElementById('resEntryTime').innerText = entryTime;
+            document.getElementById('resExpiryTime').innerText = expiryTime;
+
+            const ring = document.getElementById('radarRing');
+            const box = document.getElementById('signalBox');
+            const arrow = document.getElementById('resArrow');
+            const action = document.getElementById('resAction');
+            const sub = document.getElementById('resSub');
+
+            if (isCall) {
+                ring.className = "radar-circle call-style";
+                box.className = "radar-center-content signal-call";
+                arrow.innerText = "↑";
+                action.innerText = "CALL";
+                sub.innerText = "STRONG BUY SIGNAL";
+            } else {
+                ring.className = "radar-circle";
+                box.className = "radar-center-content signal-put";
+                arrow.innerText = "↓";
+                action.innerText = "DOWN";
+                sub.innerText = "STRONG SELL SIGNAL";
+            }
+
+            // COUNTDOWN TIMER FOR EXPIRES IN
+            let timeLeft = 45;
+            document.getElementById('resExpiresIn').innerText = "00:45";
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('resExpiresIn').innerText = "00:00";
+                } else {
+                    document.getElementById('resExpiresIn').innerText = "00:" + (timeLeft < 10 ? "0" : "") + timeLeft;
+                }
+            }, 1000);
+
+            document.getElementById('signalFormCard').style.display = 'none';
+            document.getElementById('signalResultCard').style.display = 'block';
+        }
+
+        function resetSignalCard() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            document.getElementById('signalResultCard').style.display = 'none';
+            document.getElementById('signalFormCard').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
