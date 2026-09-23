@@ -35,7 +35,6 @@
             overflow-x: hidden;
         }
 
-        /* BACKGROUND FIREFLIES EFFECT */
         .fireflies-layer {
             position: fixed;
             top: 0; left: 0;
@@ -59,7 +58,6 @@
             50% { transform: translateY(-30px) translateX(20px); opacity: 0.8; }
         }
 
-        /* 1. AUTH SCREEN */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -172,7 +170,6 @@
         .auth-toggle { text-align: center; margin-top: 12px; font-size: 12px; color: var(--text-sub); }
         .auth-toggle span { color: var(--accent-cyan); cursor: pointer; font-weight: bold; }
 
-        /* 2. MAIN TERMINAL UI */
         #mainApp { padding-bottom: 75px; max-width: 480px; margin: 0 auto; width: 100%; }
 
         .bot-header {
@@ -240,7 +237,6 @@
             gap: 6px;
         }
 
-        /* CARD CONTAINERS */
         .card-container {
             background: var(--bg-card);
             border: 1px solid var(--bg-card-border);
@@ -250,7 +246,6 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
         }
 
-        /* FORM INPUT CARD */
         .card-header-title { text-align: center; font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 2px; }
         .card-header-sub { text-align: center; font-size: 11px; color: var(--text-sub); margin-bottom: 16px; }
 
@@ -276,7 +271,6 @@
             text-transform: uppercase;
         }
 
-        /* RADAR SCANNING ANIMATION */
         .scanning-box {
             display: none;
             text-align: center;
@@ -340,7 +334,6 @@
             100% { opacity: 1; }
         }
 
-        /* SIGNAL RESULT CARD */
         .signal-result-box { display: none; padding: 16px; }
 
         .sig-top-layout {
@@ -415,11 +408,7 @@
             background: linear-gradient(to right, var(--accent-green) 8px, transparent 8px, transparent calc(100% - 8px), var(--accent-green) calc(100% - 8px));
         }
 
-        .radar-center-content {
-            z-index: 5;
-            text-align: center;
-        }
-
+        .radar-center-content { z-index: 5; text-align: center; }
         .radar-arrow { font-size: 38px; line-height: 1; font-weight: 900; }
         .radar-action-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-top: -4px; }
         .radar-sub-text { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
@@ -441,12 +430,7 @@
         .metric-box .l { font-size: 7px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
         .metric-box .v { font-size: 11px; font-weight: 800; color: #fff; margin-top: 3px; }
 
-        .sig-card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
+        .sig-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 
         .ai-status-badge {
             display: flex;
@@ -499,7 +483,6 @@
         .stat-card .l { font-size: 8px; color: var(--text-sub); text-transform: uppercase; }
         .stat-card .v { font-size: 11px; font-weight: 800; color: var(--accent-cyan); margin-top: 2px; }
 
-        /* FIXED BOTTOM NAVIGATION BAR */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -544,7 +527,6 @@
 
     <div class="fireflies-layer" id="firefliesLayer"></div>
 
-    <!-- 1. LOGIN / REGISTER SCREEN -->
     <div id="authScreen" class="auth-container">
         <div class="auth-wrapper">
             <div class="lamp-section">
@@ -590,7 +572,6 @@
                         <input type="password" id="regPassword" required placeholder="••••••••">
                     </div>
                     
-                    <!-- UPDATED REGISTER PLAN SELECTION DROPDOWN -->
                     <div class="form-group">
                         <label>Plan Access Option</label>
                         <select id="regOption" onchange="toggleTraderIdField()">
@@ -608,7 +589,7 @@
                         <input type="text" id="regTraderId" placeholder="Enter Your Trader ID">
                     </div>
 
-                    <button type="submit" class="btn-auth">REGISTER ACCOUNT</button>
+                    <button type="submit" class="btn-auth" id="regSubmitBtn">REGISTER ACCOUNT</button>
                     <div class="auth-toggle">
                         Already registered? <span onclick="toggleAuthMode('login')">Login Here</span>
                     </div>
@@ -617,10 +598,7 @@
         </div>
     </div>
 
-    <!-- 2. MAIN TERMINAL -->
     <div id="mainApp" style="display: none;">
-        
-        <!-- BOT HEADER -->
         <div class="bot-header">
             <div class="bot-avatar">🤖</div>
             <div class="bot-title-box">
@@ -634,7 +612,6 @@
             </div>
         </div>
 
-        <!-- STATUS RIBBON -->
         <div class="status-ribbon">
             <div class="status-card">
                 <div class="lbl">LICENSE STATUS</div>
@@ -654,10 +631,7 @@
             👑 PRO MAX UNLOCKED ✅
         </div>
 
-        <!-- TERMINAL VIEW -->
         <div id="terminalView" class="view-section active">
-
-            <!-- FORM SELECTION CARD -->
             <div id="signalFormCard" class="card-container">
                 <div class="card-header-title">GENERATE SIGNALS</div>
                 <div class="card-header-sub">AI Analyzed High Accuracy Trading Signals</div>
@@ -680,11 +654,9 @@
                     </select>
                 </div>
 
-                <!-- DYNAMIC ASSET PAIRS SELECT -->
                 <div class="select-box-group">
                     <label>📊 ASSET PAIR</label>
                     <select id="pairSelect">
-                        <!-- Dynamically Filled by JavaScript -->
                     </select>
                 </div>
 
@@ -702,7 +674,6 @@
                 </button>
             </div>
 
-            <!-- RADAR SCANNING PROCESS CARD -->
             <div id="scanningCard" class="card-container scanning-box">
                 <div style="font-size:16px; font-weight:900; color:#fff;">ANALYZING MARKET DATA</div>
                 <div style="font-size:11px; color:var(--text-sub); margin-top:3px;">Market Vision AI Radar Scanning...</div>
@@ -715,7 +686,6 @@
                 <div class="scan-status-text" id="scanStatusMsg">SCANNING MARKET ALGORITHM...</div>
             </div>
 
-            <!-- SIGNAL RESULT CARD -->
             <div id="signalResultCard" class="card-container signal-result-box">
                 <div class="sig-top-layout">
                     <div class="sig-col-left">
@@ -791,7 +761,6 @@
                 </div>
             </div>
 
-            <!-- BOTTOM STATS BAR -->
             <div class="bottom-stats">
                 <div class="stat-card">
                     <div class="l">AI ACCURACY</div>
@@ -810,10 +779,8 @@
                     <div class="v">32</div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ADMIN PANEL VIEW -->
         <div id="adminView" class="view-section">
             <div class="card-container">
                 <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">👑 Admin Control Panel</h3>
@@ -837,7 +804,6 @@
             </div>
         </div>
 
-        <!-- SETTINGS VIEW -->
         <div id="settingsView" class="view-section">
             <div class="card-container">
                 <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">⚙️ User Settings</h3>
@@ -866,7 +832,6 @@
             </div>
         </div>
 
-        <!-- FIXED BOTTOM NAV BAR -->
         <nav class="bottom-nav">
             <div class="nav-item active" onclick="switchTab('terminalView', this)">
                 <div style="font-size:16px;">🏠</div>
@@ -881,7 +846,6 @@
                 <span>Settings</span>
             </div>
         </nav>
-
     </div>
 
     <script>
@@ -889,7 +853,6 @@
         const ADMIN_PHONE = "923157327830";
         const FREE_ALLOWED_PAIRS = ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"];
 
-        // PAIR DATA LIST
         const pairData = [
             { group: "Standard Forex Pairs", isFree: true, pairs: ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"] },
             { group: "VIP Live Pairs", isFree: false, pairs: ["USD/ARS (OTC)", "EUR/JPY", "GBP/JPY", "USD/CHF", "USD/CAD", "USD/PKR"] },
@@ -909,7 +872,6 @@
         let currentUser = JSON.parse(sessionStorage.getItem('activeUser')) || null;
         let countdownInterval = null;
 
-        // GENERATE FIREFLIES
         const layer = document.getElementById('firefliesLayer');
         for (let i = 0; i < 25; i++) {
             const p = document.createElement('div');
@@ -947,7 +909,6 @@
                 document.getElementById('adminNavItem').style.display = "none";
             }
 
-            // Update UI Badges based on status
             if (isPro) {
                 document.getElementById('terminalBadge').innerText = "PRO MAX";
                 document.getElementById('bannerStatus').innerHTML = "👑 PRO MAX UNLOCKED ✅";
@@ -964,11 +925,9 @@
             document.getElementById('setUserEmail').value = currentUser.email;
             document.getElementById('setUserPlan').value = isPro ? 'PRO VIP (ACTIVE)' : 'NORMAL (FREE PLAN)';
 
-            // POPULATE PAIR DROPDOWN BASED ON PRO/FREE STATUS
             updatePairDropdown();
         }
 
-        // FUNCTION TO RENDER PAIR OPTIONS BASED ON USER PLAN
         function updatePairDropdown() {
             const pairSelect = document.getElementById('pairSelect');
             pairSelect.innerHTML = '';
@@ -980,16 +939,14 @@
                 const optgroup = document.createElement('optgroup');
                 
                 if (isPro) {
-                    // PRO / ADMIN USERS: SIMPLE CLEAN NAMES (NO LOCKS, NO "FREE" TAGS)
                     optgroup.label = g.group;
                     g.pairs.forEach(p => {
                         const opt = document.createElement('option');
                         opt.value = p;
-                        opt.textContent = p; // Pure simple pair name
+                        opt.textContent = p;
                         optgroup.appendChild(opt);
                     });
                 } else {
-                    // FREE / NORMAL USERS: SHOW LOCKS & FREE TAGS
                     optgroup.label = g.isFree ? "✅ FREE Allowed Pairs" : "🔒 " + g.group;
                     g.pairs.forEach(p => {
                         const opt = document.createElement('option');
@@ -1038,7 +995,7 @@
             }
         }
 
-        function handleRegister(e) {
+        async function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
@@ -1061,7 +1018,7 @@
                 name,
                 email,
                 password,
-                plan: "Normal", // New registration is Normal plan by default
+                plan: "Normal",
                 option: optionLabel,
                 traderId: traderId
             };
@@ -1072,7 +1029,23 @@
             currentUser = newUser;
             sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
 
-            // If user selected PRO option, notify admin on WhatsApp
+            // Vercel Background Notification API Call
+            try {
+                fetch('/api/notify-signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        option: optionLabel,
+                        traderId: traderId
+                    })
+                });
+            } catch(err) {
+                console.log("Email Notification Failed:", err);
+            }
+
+            // WhatsApp Redirection for Paid/Broker Registration Options
             if (option !== "free") {
                 let msg = `Hi Admin! Registered on Market Vision AI.%0AName: ${name}%0AEmail: ${email}%0AMethod: ${newUser.option}%0ATrader ID: ${traderId}`;
                 window.open(`https://wa.me/${ADMIN_PHONE}?text=${msg}`, '_blank');
@@ -1206,20 +1179,17 @@
             const box = document.getElementById('signalBox');
             const arrow = document.getElementById('resArrow');
             const action = document.getElementById('resAction');
-            const sub = document.getElementById('resSub');
 
             if (isCall) {
                 ring.className = "radar-circle call-style";
                 box.className = "radar-center-content signal-call";
                 arrow.innerText = "↑";
                 action.innerText = "CALL";
-                sub.innerText = "STRONG BUY SIGNAL";
             } else {
                 ring.className = "radar-circle";
                 box.className = "radar-center-content signal-put";
                 arrow.innerText = "↓";
                 action.innerText = "DOWN";
-                sub.innerText = "STRONG SELL SIGNAL";
             }
 
             let timeLeft = 45;
