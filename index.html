@@ -59,7 +59,7 @@
             50% { transform: translateY(-30px) translateX(20px); opacity: 0.8; }
         }
 
-        /* 1. AUTH SCREEN (UNTOUCHED PORANI SETTING) */
+        /* 1. AUTH SCREEN */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -276,7 +276,7 @@
             text-transform: uppercase;
         }
 
-        /* RADAR SCANNING ANIMATION STATE */
+        /* RADAR SCANNING ANIMATION */
         .scanning-box {
             display: none;
             text-align: center;
@@ -340,7 +340,7 @@
             100% { opacity: 1; }
         }
 
-        /* SIGNAL RESULT ANIMATION CARD */
+        /* SIGNAL RESULT CARD */
         .signal-result-box { display: none; padding: 16px; }
 
         .sig-top-layout {
@@ -364,7 +364,6 @@
         .sig-label { font-size: 8px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
         .sig-value { font-size: 12px; font-weight: 800; color: #fff; margin-top: 2px; }
 
-        /* RADAR TARGET ANIMATION */
         .target-radar-wrapper {
             position: relative;
             width: 140px;
@@ -428,7 +427,6 @@
         .signal-put .radar-arrow, .signal-put .radar-action-text { color: var(--accent-red); }
         .signal-call .radar-arrow, .signal-call .radar-action-text { color: var(--accent-green); }
 
-        /* MIDDLE 4-METRICS GRID */
         .sig-metrics-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -443,7 +441,6 @@
         .metric-box .l { font-size: 7px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
         .metric-box .v { font-size: 11px; font-weight: 800; color: #fff; margin-top: 3px; }
 
-        /* BOTTOM FOOTER OF SIGNAL CARD */
         .sig-card-footer {
             display: flex;
             align-items: center;
@@ -484,7 +481,6 @@
             text-transform: uppercase;
         }
 
-        /* BOTTOM STATS BAR */
         .bottom-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -503,7 +499,7 @@
         .stat-card .l { font-size: 8px; color: var(--text-sub); text-transform: uppercase; }
         .stat-card .v { font-size: 11px; font-weight: 800; color: var(--accent-cyan); margin-top: 2px; }
 
-        /* FIXED BOTTOM NAVIGATION BAR (CORRECTED FLEX ALIGNMENT) */
+        /* FIXED BOTTOM NAVIGATION BAR */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -511,7 +507,7 @@
             background: rgba(8, 13, 26, 0.95);
             border-top: 1px solid var(--bg-card-border);
             display: flex;
-            justify-content: space-around; /* FIXED HERE */
+            justify-content: space-around;
             align-items: center;
             z-index: 1000;
             backdrop-filter: blur(10px);
@@ -529,13 +525,12 @@
             font-size: 10px;
             font-weight: 700;
             cursor: pointer;
-            flex: 1; /* FIXED HERE: EVENLY DISTRIBUTES ALL BUTTONS */
+            flex: 1;
             text-align: center;
         }
 
         .nav-item.active { color: var(--accent-cyan); }
 
-        /* ADMIN & SETTINGS */
         .user-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
         .user-table th, .user-table td { border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px; text-align: left; }
         .user-table th { background: #0f172a; color: var(--accent-cyan); }
@@ -680,30 +675,11 @@
                     </select>
                 </div>
 
+                <!-- DYNAMIC ASSET PAIRS SELECT -->
                 <div class="select-box-group">
                     <label>📊 ASSET PAIR</label>
                     <select id="pairSelect">
-                        <optgroup label="✅ FREE Allowed Pairs (5 Pairs)">
-                            <option value="EUR/USD">EUR/USD ✅ (FREE)</option>
-                            <option value="GBP/USD">GBP/USD ✅ (FREE)</option>
-                            <option value="USD/JPY">USD/JPY ✅ (FREE)</option>
-                            <option value="AUD/USD">AUD/USD ✅ (FREE)</option>
-                            <option value="EUR/GBP">EUR/GBP ✅ (FREE)</option>
-                        </optgroup>
-                        <optgroup label="🔒 PRO VIP Live Pairs">
-                            <option value="USD/ARS (OTC)">USD/ARS (OTC) 🔒</option>
-                            <option value="EUR/JPY">EUR/JPY 🔒</option>
-                            <option value="GBP/JPY">GBP/JPY 🔒</option>
-                            <option value="USD/CHF">USD/CHF 🔒</option>
-                            <option value="USD/CAD">USD/CAD 🔒</option>
-                            <option value="USD/PKR">USD/PKR 🔒</option>
-                        </optgroup>
-                        <optgroup label="🔒 PRO VIP OTC Pairs">
-                            <option value="USD/PKR OTC">USD/PKR OTC 🔒</option>
-                            <option value="USD/INR OTC">USD/INR OTC 🔒</option>
-                            <option value="EUR/USD OTC">EUR/USD OTC 🔒</option>
-                            <option value="GBP/USD OTC">GBP/USD OTC 🔒</option>
-                        </optgroup>
+                        <!-- Dynamically Filled by JavaScript -->
                     </select>
                 </div>
 
@@ -736,9 +712,7 @@
 
             <!-- SIGNAL RESULT CARD -->
             <div id="signalResultCard" class="card-container signal-result-box">
-                
                 <div class="sig-top-layout">
-                    <!-- LEFT COLUMN -->
                     <div class="sig-col-left">
                         <div>
                             <div class="sig-label">PAIR</div>
@@ -754,7 +728,6 @@
                         </div>
                     </div>
 
-                    <!-- CENTER RADAR TARGET -->
                     <div class="target-radar-wrapper">
                         <div class="radar-circle" id="radarRing">
                             <div class="radar-tick-v"></div>
@@ -767,7 +740,6 @@
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN -->
                     <div class="sig-col-right">
                         <div>
                             <div class="sig-label">SIGNAL ID</div>
@@ -784,7 +756,6 @@
                     </div>
                 </div>
 
-                <!-- MIDDLE 4-METRICS -->
                 <div class="sig-metrics-grid">
                     <div class="metric-box">
                         <div class="l">ENTRY TIME</div>
@@ -804,7 +775,6 @@
                     </div>
                 </div>
 
-                <!-- FOOTER BUTTONS -->
                 <div class="sig-card-footer">
                     <div class="ai-status-badge">
                         <div class="dot"></div>
@@ -814,7 +784,6 @@
                         🔄 GENERATE NEW SIGNAL
                     </button>
                 </div>
-
             </div>
 
             <!-- BOTTOM STATS BAR -->
@@ -915,6 +884,13 @@
         const ADMIN_PHONE = "923157327830";
         const FREE_ALLOWED_PAIRS = ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"];
 
+        // PAIR DATA LIST
+        const pairData = [
+            { group: "Standard Forex Pairs", isFree: true, pairs: ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "EUR/GBP"] },
+            { group: "VIP Live Pairs", isFree: false, pairs: ["USD/ARS (OTC)", "EUR/JPY", "GBP/JPY", "USD/CHF", "USD/CAD", "USD/PKR"] },
+            { group: "VIP OTC Pairs", isFree: false, pairs: ["USD/PKR OTC", "USD/INR OTC", "EUR/USD OTC", "GBP/USD OTC"] }
+        ];
+
         let defaultUsers = [
             { name: "Super Admin", email: "Blofar486@gmail.com", password: "78600786@@", plan: "Pro", option: "Admin", traderId: "N/A" }
         ];
@@ -966,6 +942,44 @@
             document.getElementById('setUserName').value = currentUser.name;
             document.getElementById('setUserEmail').value = currentUser.email;
             document.getElementById('setUserPlan').value = currentUser.plan === 'Pro' ? 'PRO VIP (ACTIVE)' : 'NORMAL (FREE PLAN)';
+
+            // POPULATE PAIR DROPDOWN BASED ON PRO/FREE STATUS
+            updatePairDropdown();
+        }
+
+        // FUNCTION TO RENDER PAIR OPTIONS BASED ON USER PLAN
+        function updatePairDropdown() {
+            const pairSelect = document.getElementById('pairSelect');
+            pairSelect.innerHTML = '';
+
+            const isAdmin = currentUser && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            const isPro = currentUser && (currentUser.plan === 'Pro' || isAdmin);
+
+            pairData.forEach(g => {
+                const optgroup = document.createElement('optgroup');
+                
+                if (isPro) {
+                    // PRO / ADMIN USERS: SIMPLE CLEAN NAMES (NO LOCKS, NO "FREE" TAGS)
+                    optgroup.label = g.group;
+                    g.pairs.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p;
+                        opt.textContent = p; // Pure simple pair name
+                        optgroup.appendChild(opt);
+                    });
+                } else {
+                    // FREE / NORMAL USERS: SHOW LOCKS & FREE TAGS
+                    optgroup.label = g.isFree ? "✅ FREE Allowed Pairs" : "🔒 " + g.group;
+                    g.pairs.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p;
+                        opt.textContent = g.isFree ? `${p} ✅ (FREE)` : `${p} 🔒`;
+                        optgroup.appendChild(opt);
+                    });
+                }
+
+                pairSelect.appendChild(optgroup);
+            });
         }
 
         function toggleAuthMode(mode) {
@@ -1066,12 +1080,22 @@
         function approvePro(i) {
             users[i].plan = 'Pro';
             localStorage.setItem('users_db', JSON.stringify(users));
+            if (currentUser && currentUser.email.toLowerCase() === users[i].email.toLowerCase()) {
+                currentUser.plan = 'Pro';
+                sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
+                updatePairDropdown();
+            }
             renderAdminTable();
         }
 
         function setNormal(i) {
             users[i].plan = 'Normal';
             localStorage.setItem('users_db', JSON.stringify(users));
+            if (currentUser && currentUser.email.toLowerCase() === users[i].email.toLowerCase()) {
+                currentUser.plan = 'Normal';
+                sessionStorage.setItem('activeUser', JSON.stringify(currentUser));
+                updatePairDropdown();
+            }
             renderAdminTable();
         }
 
