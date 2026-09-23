@@ -59,7 +59,7 @@
             50% { transform: translateY(-30px) translateX(20px); opacity: 0.8; }
         }
 
-        /* 1. AUTH SCREEN (PORANI UNTOUCHED SETTING) */
+        /* 1. AUTH SCREEN (UNTOUCHED PORANI SETTING) */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -276,7 +276,7 @@
             text-transform: uppercase;
         }
 
-        /* 3. RADAR SCANNING ANIMATION STATE (BEFORE SIGNAL GENERATE) */
+        /* RADAR SCANNING ANIMATION STATE */
         .scanning-box {
             display: none;
             text-align: center;
@@ -340,7 +340,7 @@
             100% { opacity: 1; }
         }
 
-        /* 4. SIGNAL RESULT ANIMATION CARD (EXACT MATCHING IMAGE LAYOUT) */
+        /* SIGNAL RESULT ANIMATION CARD */
         .signal-result-box { display: none; padding: 16px; }
 
         .sig-top-layout {
@@ -364,7 +364,7 @@
         .sig-label { font-size: 8px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; }
         .sig-value { font-size: 12px; font-weight: 800; color: #fff; margin-top: 2px; }
 
-        /* RADAR TARGET ANIMATION WITH CROSSHAIRS */
+        /* RADAR TARGET ANIMATION */
         .target-radar-wrapper {
             position: relative;
             width: 140px;
@@ -395,7 +395,6 @@
             50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px rgba(244, 63, 94, 0.7); }
         }
 
-        /* CROSSHAIR TICKS */
         .radar-tick-v {
             position: absolute;
             top: -6px; bottom: -6px; left: 50%; width: 2px;
@@ -504,16 +503,36 @@
         .stat-card .l { font-size: 8px; color: var(--text-sub); text-transform: uppercase; }
         .stat-card .v { font-size: 11px; font-weight: 800; color: var(--accent-cyan); margin-top: 2px; }
 
-        /* NAV BAR */
+        /* FIXED BOTTOM NAVIGATION BAR (CORRECTED FLEX ALIGNMENT) */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 60px;
             background: rgba(8, 13, 26, 0.95);
             border-top: 1px solid var(--bg-card-border);
-            display: flex; justify-space-around; align-items: center;
-            z-index: 1000; backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around; /* FIXED HERE */
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            max-width: 480px;
+            margin: 0 auto;
         }
 
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-sub); font-size: 10px; font-weight: 700; cursor: pointer; }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: var(--text-sub);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1; /* FIXED HERE: EVENLY DISTRIBUTES ALL BUTTONS */
+            text-align: center;
+        }
+
         .nav-item.active { color: var(--accent-cyan); }
 
         /* ADMIN & SETTINGS */
@@ -530,7 +549,7 @@
 
     <div class="fireflies-layer" id="firefliesLayer"></div>
 
-    <!-- 1. LOGIN / REGISTER SCREEN (UNTOUCHED PORANI SETTING) -->
+    <!-- 1. LOGIN / REGISTER SCREEN -->
     <div id="authScreen" class="auth-container">
         <div class="auth-wrapper">
             <div class="lamp-section">
@@ -601,7 +620,7 @@
     <!-- 2. MAIN TERMINAL -->
     <div id="mainApp" style="display: none;">
         
-        <!-- BOT HEADER (MARKET VISION AI) -->
+        <!-- BOT HEADER -->
         <div class="bot-header">
             <div class="bot-avatar">🤖</div>
             <div class="bot-title-box">
@@ -715,7 +734,7 @@
                 <div class="scan-status-text" id="scanStatusMsg">SCANNING MARKET ALGORITHM...</div>
             </div>
 
-            <!-- EXACT SIGNAL RESULT CARD -->
+            <!-- SIGNAL RESULT CARD -->
             <div id="signalResultCard" class="card-container signal-result-box">
                 
                 <div class="sig-top-layout">
@@ -873,7 +892,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV BAR -->
+        <!-- FIXED BOTTOM NAV BAR -->
         <nav class="bottom-nav">
             <div class="nav-item active" onclick="switchTab('terminalView', this)">
                 <div style="font-size:16px;">🏠</div>
@@ -1082,7 +1101,6 @@
             window.open(`https://wa.me/${ADMIN_PHONE}?text=Hi%20Admin!%20I%20want%20to%20upgrade%20my%20account`, '_blank');
         }
 
-        // STEP 1: START RADAR SCANNING PROCESS
         function startRadarScanning() {
             const pair = document.getElementById('pairSelect').value;
 
@@ -1095,7 +1113,6 @@
                 return;
             }
 
-            // Hide Form, Show Radar Scanner
             document.getElementById('signalFormCard').style.display = 'none';
             document.getElementById('scanningCard').style.display = 'block';
 
@@ -1106,14 +1123,12 @@
                 statusText.innerText = "CALCULATING ENTRY POINT & ACCURACY...";
             }, 1200);
 
-            // After 2.8 seconds radar scanning, generate final signal
             setTimeout(() => {
                 document.getElementById('scanningCard').style.display = 'none';
                 displayFinalSignal();
             }, 2800);
         }
 
-        // STEP 2: DISPLAY FINAL SIGNAL RESULT
         function displayFinalSignal() {
             const pair = document.getElementById('pairSelect').value;
             const broker = document.getElementById('brokerSelect').value;
@@ -1155,7 +1170,6 @@
                 sub.innerText = "STRONG SELL SIGNAL";
             }
 
-            // COUNTDOWN TIMER
             let timeLeft = 45;
             document.getElementById('resExpiresIn').innerText = "00:45";
             if (countdownInterval) clearInterval(countdownInterval);
